@@ -1,1 +1,2 @@
-print('teste')
+fin = open('words.txt')
+fin.readline()
