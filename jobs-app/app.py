@@ -25,7 +25,7 @@ def main():
     finalizar('celulares.db', celulares)
 
 def tela_principal():
-    menu = '***** App Jobs Cell ***** \n'
+    menu = '\n***** App Jobs Cell ***** \n'
     menu += '1 - Novo celular\n'
     menu += '2 - Listar celulares\n'
     menu += '3 - Pesquisar celular\n'
@@ -34,7 +34,8 @@ def tela_principal():
     return menu
 
 def tela_detalhes(celular):
-    menu = f'+++++ Voce selecionou o celular {celular}. O que deseja fazer agora? +++++  \n'
+    nome = celular['nome']
+    menu = f'+++++ Voce selecionou o celular {nome}. O que deseja fazer agora? +++++  \n'
     menu += '1 - Mostrar Detalhes\n'
     menu += '2 - Remover\n'
     menu += '3 - Editar\n'
@@ -101,27 +102,52 @@ def buscar_celular(celulares):
             print('Valor: ', celular['valor'])
             print(12*'---')
             celulares_listados.append(celular)
-
-    entrar_no_submenu = input('Deseja selecionar um celular? (sim/nao) ')
-    if entrar_no_submenu == 'sim' or entrar_no_submenu == 's':
-        celular_escolhido = int(input('\nDigite o número do celular que deseja selecionar> '))
-        # celulares_listados[celular_escolhido-1]
-        print(tela_detalhes(celulares_listados[celular_escolhido-1]['nome']))
-        # sub_menu(celulares_listados[celular_escolhido-1]['nome']))
+        
+    if contador == 0:
+        print('Celular ou marca não encontrado nos registros!')
     else:
-        pass
+        entrar_no_submenu = input('Deseja selecionar um celular? (sim/nao) ')
+        if entrar_no_submenu == 'sim' or entrar_no_submenu == 's':
+            celular_escolhido = int(input('\nDigite o número do celular que deseja selecionar> '))
+            sub_menu(celulares_listados, celulares, celular_escolhido)
+        else:
+            pass
+    
+    
 
-# def sub_menu():
-#     while opcao != 0:
-#         if opcao == 1:
-#             celular = novo_celular()
+def sub_menu(celulares_listados, celulares, celular_escolhido):
+    print(celulares)
+    menu = tela_detalhes(celulares_listados[celular_escolhido-1])
+    opcao = int(input(menu))
+    
+    while opcao != 0:
+        if opcao == 1:
+            mostrar_detalhes(celulares_listados[celular_escolhido-1])
+        elif opcao == 2:
+            remover_celular(celulares_listados, celulares, celular_escolhido)
+        elif opcao == 3:
+            pass
+        input('<enter> to continue...')
+        opcao = int(input(menu))
 
-#             celulares.append(celular)
-#             print('Celular cadastrado com sucesso!')
+    finalizar('celulares.db', celulares)
 
-#         elif opcao == 2:
-#             mostrar_celulares(celulares)
-#         elif opcao == 3:
-#             buscar_celular(celulares)
+def mostrar_detalhes(celular):
+    print('Nome: ', celular['nome'])
+    print('Marca: ', celular['marca'])
+    print('Valor: ', celular['valor'])
+    print('Tela: ', celular['tela'])
+    print('Camera frontal: ', celular['cam_frontal'])
+    print(12*'---')
+
+def remover_celular(celulares_listados, celulares, celular_escolhido):
+    indice = -1
+    for item in celulares:
+        indice += 1
+        if item['nome'] == celulares_listados[celular_escolhido-1]['nome']:
+            celulares.pop(indice)
+
+    print('Celular removido com sucesso!') 
+    
 
 main()
