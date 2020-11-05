@@ -33,6 +33,16 @@ def tela_principal():
     menu += '\nopcao >>> '
     return menu
 
+def tela_detalhes(celular):
+    menu = f'+++++ Voce selecionou o celular {celular}. O que deseja fazer agora? +++++  \n'
+    menu += '1 - Mostrar Detalhes\n'
+    menu += '2 - Remover\n'
+    menu += '3 - Editar\n'
+    menu += '4 - Duplicar\n'
+    menu += '0 - Sair \n'
+    menu += '\nopcao >>> '
+    return menu
+
 def inicializar(nome_arquivo):
     celulares_carregados = []
     if os.path.exists(nome_arquivo):
@@ -77,12 +87,41 @@ def mostrar_celulares(celulares):
         print(12*'---')
 
 def buscar_celular(celulares):
-    nome_ou_marca = input('Digite o nome ou marca: ')
-    print(nome_ou_marca)
+    
+    nome_ou_marca = input('\nDigite o nome ou marca: ')
+    # print(nome_ou_marca)
+    contador = 0
+    celulares_listados = []
     for celular in celulares:
-        print(celular['nome'])
-        if nome_ou_marca in (celular['nome'] or celular['marca']):
-            print('ok')
+        if celular['nome'].startswith(nome_ou_marca) or celular['marca'].startswith(nome_ou_marca):
+            contador += 1
+            print(f'\n>>>>> {contador} <<<<<')
+            print('Nome: ', celular['nome'])
+            print('Marca: ', celular['marca'])
+            print('Valor: ', celular['valor'])
+            print(12*'---')
+            celulares_listados.append(celular)
 
+    entrar_no_submenu = input('Deseja selecionar um celular? (sim/nao) ')
+    if entrar_no_submenu == 'sim' or entrar_no_submenu == 's':
+        celular_escolhido = int(input('\nDigite o número do celular que deseja selecionar> '))
+        # celulares_listados[celular_escolhido-1]
+        print(tela_detalhes(celulares_listados[celular_escolhido-1]['nome']))
+        # sub_menu(celulares_listados[celular_escolhido-1]['nome']))
+    else:
+        pass
+
+# def sub_menu():
+#     while opcao != 0:
+#         if opcao == 1:
+#             celular = novo_celular()
+
+#             celulares.append(celular)
+#             print('Celular cadastrado com sucesso!')
+
+#         elif opcao == 2:
+#             mostrar_celulares(celulares)
+#         elif opcao == 3:
+#             buscar_celular(celulares)
 
 main()
